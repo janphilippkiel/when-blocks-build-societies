@@ -1,0 +1,48 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"editor.wordWrap": "on",
+		"editor.tabCompletion": "on",
+		"window.zoomLevel": 0,
+		"latex-workshop.view.pdf.viewer": "tab",
+		"latex-workshop.latex.clean.fileTypes": [
+			"*.aux",
+			"*.fdb_latexmk",
+			"*.fls",
+			"*.log",
+			"*.maf",
+			"*.mtc",
+			"*.mtc0",
+			"*.out",
+			"*.stc*",
+			"*.synctex.gz",
+			"*.toc",
+			"*.acn",
+			"*.acr",
+			"*.alg",
+			"*.bbl",
+			"*.bcf",
+			"*.blg",
+			"*.glg",
+			"*.glo",
+			"*.gls",
+			"*.ist",
+			"*.idx",
+			"*.ind",
+			"*.lof",
+			"*.lot",
+			"*.out",
+			"*.run.xml",
+			"*.synctex(busy)",
+			"*.lot",
+			"*.xdv",
+			"*.fdb_latexmk",
+			"__latexindent_temp.tex",
+		],
+		"ltex.language": "en-US"
+	}
+}
