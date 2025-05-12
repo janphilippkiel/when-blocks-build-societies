@@ -1,0 +1,1 @@
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QAdvanced Seminar Information Systems and Digital Technology Prof. Dr. Stefan Seidel\\E$"}
