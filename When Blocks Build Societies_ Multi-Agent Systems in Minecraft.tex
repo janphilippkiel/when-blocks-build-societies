@@ -53,12 +53,13 @@
 	% citecolor=black
 }
 \usepackage[labelfont=bf]{caption}
+\captionsetup[table]{justification=raggedright, singlelinecheck=false, labelfont=normalfont}
 \usepackage{float}
 
 % set margins for double-sided printing
-\usepackage[left=3.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry} 
+\usepackage[left=4cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry} 
 \usepackage{setspace}
-\onehalfspacing
+% \onehalfspacing
 % set header
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -69,9 +70,47 @@
 \fancypagestyle{plain}[fancy]{} % use fancy style for TOC
 \setlength{\headheight}{15pt}
 \usepackage{indentfirst} % indent first paragraph after section heading
+\setlength{\parindent}{3em}
 
+% Section heading font sizes
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\bfseries\fontsize{14}{16}\selectfont}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\bfseries\fontsize{13}{15}\selectfont}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\bfseries\fontsize{12}{14}\selectfont}{\thesubsubsection}{1em}{}
+\titlespacing*{\section}{0pt}{1em}{0em}
+\titlespacing*{\subsection}{0pt}{1em}{0em}
+\titlespacing*{\subsubsection}{0pt}{1em}{0em}
+
+% Table of Contents formatting
 \usepackage{tocloft}
+\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\cfttoctitlefont}{\fontsize{14}{16}\selectfont\bfseries}
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftdotsep}{0.5}
+\renewcommand{\cftsecnumwidth}{2em}
+\renewcommand{\cftsubsecnumwidth}{3em}
+\renewcommand{\cftsubsubsecnumwidth}{4em}
+\renewcommand{\cftsubsecindent}{4em}
+\renewcommand{\cftsubsubsecindent}{7em}
+% Remove extra space before page numbers in TOC
+\renewcommand{\cftsecafterpnum}{\hspace{0pt}}
+\renewcommand{\cftsubsecafterpnum}{\hspace{0pt}}
+\renewcommand{\cftsubsubsecafterpnum}{\hspace{0pt}}
+\renewcommand{\cftsecfont}{\normalfont}
+\renewcommand{\cftsecpagefont}{\normalfont}
+\renewcommand{\cftbeforesecskip}{0pt}
+\renewcommand{\cftsecindent}{0pt}
+\renewcommand{\cftbeforesubsecskip}{0pt}
+% Increase indentation for subsections and subsubsections in TOC
+\renewcommand{\cftsubsecindent}{4em}
+\renewcommand{\cftsubsecnumwidth}{4em}
+\renewcommand{\cftsubsubsecindent}{5em} 
+\renewcommand{\cftsubsubsecnumwidth}{3em}
+
+% List formatting and bullet size
+\renewcommand{\labelitemi}{\normalsize$\bullet$}
+\setlist[itemize]{leftmargin=*, labelsep=1em}
+\setlist[enumerate]{leftmargin=*, labelsep=1em}
 
 % set APA citation style
 % \usepackage{apacite}
@@ -92,6 +131,9 @@
 }
 
 \begin{document}
+
+\setstretch{1.5}
+\pagenumbering{Roman}
 
 \begin{titlepage}
     \begin{center}
@@ -120,7 +162,8 @@
 \end{titlepage}
 
 \clearpage
-\pagenumbering{Roman}
+% Table of Contents self-reference
+\addcontentsline{toc}{section}{Table of Contents}
 \tableofcontents
 \clearpage
 % \listoffigures
@@ -137,7 +180,9 @@
 
 \section{Introduction}
 
-Multi-agent systems represent one of the most promising frontiers in artificial intelligence (AI) research, offering insights into how autonomous entities can collaborate, compete, and coexist within shared environments. These systems enable the study of complex emergent behaviors and collective intelligence that extend beyond the capabilities of single agents \autocite{Leeuwen2021SelfOrganizingMS, shu2024effectivegenaimultiagentcollaboration}. As AI continues to advance, understanding the principles that govern effective multi-agent collaboration becomes increasingly vital for applications ranging from robotic teams to virtual assistants.
+Multi-agent systems (MAS) represent one of the most promising frontiers in artificial intelligence (AI) research, offering insights into how autonomous entities can collaborate, compete, and coexist within shared environments. These systems enable the study of complex emergent behaviors and collective intelligence that extend beyond the capabilities of single agents \autocite{Leeuwen2021SelfOrganizingMS, shu2024effectivegenaimultiagentcollaboration}. As AI continues to advance, understanding the principles that govern effective multi-agent collaboration becomes increasingly vital for applications ranging from robotic teams to virtual assistants.
+
+Despite advances in MAS, there is limited understanding of how different collaborative frameworks—--task-oriented versus socially-oriented--—impact sustainable collaboration in complex virtual environments such as Minecraft. This paper addresses the need to compare these approaches within the Minecraft domain to inform future design of collaborative agent societies in similar virtual environments. The scope of this research is limited to Minecraft-based MAS. While potential parallels to other domains are discussed, all findings and design principles are grounded in the Minecraft context.
 
 Minecraft, with its open-world sandbox nature, procedurally generated environments, and flexible crafting systems, has emerged as an ideal platform for studying multi-agent interactions \autocite{fan2022minedojobuildingopenendedembodied}. The game's combination of simple rules and complex emergent behaviors creates a rich test bed for AI research that bridges the gap between controlled laboratory experiments and the messy complexity of real-world environments \autocite{zhao2024steveseriesstepbystepconstruction}. Its block-based world allows for precise control while still presenting meaningful challenges in navigation, resource gathering, construction, and social interaction.
 
@@ -145,21 +190,32 @@ Current multi-agent research in Minecraft has predominantly focused on specific 
 
 Two recent research initiatives have made significant strides in addressing different aspects of this challenge: Project Sid and TeamCraft. Project Sid, introduced in 2024, explores large-scale simulations of 10-1000+ AI agents, focusing on how these agents develop specialized roles, adhere to collective rules, and engage in cultural transmission within a civilization-inspired framework \autocite{al2024projectsidmanyagentsimulations}. In contrast, TeamCraft provides a multi-modal multi-agent benchmark featuring 55,000 task variants designed to test various aspects of agent collaboration through structured prompts and demonstrations \autocite{long2024teamcraftbenchmarkmultimodalmultiagent}.
 
-This paper addresses the research question: 
+This paper addresses the following research question (RQ):
 
-\begin{quote}
-    \emph{How do Project Sid's self-organizing social systems compare to TeamCraft's task-oriented coordination frameworks in achieving sustainable multi-agent collaboration?}
-\end{quote}
+\begin{itemize}
+    \item \textit{RQ}: How do different collaborative frameworks in Minecraft address the challenge of sustainable multi-agent collaboration within virtual environments?
+\end{itemize}
 
-This comparison is crucial for understanding the trade-offs between emergent, socially-driven organization and structured, task-driven coordination in multi-agent systems. By analyzing these contrasting approaches, we aim to identify design principles that can inform the development of more robust and adaptable collaborative AI systems.
+This comparison is crucial for understanding the trade-offs between emergent, socially-driven organization and structured, task-driven coordination in Minecraft-based MAS. By analyzing these contrasting approaches, we aim to identify design principles that can inform the development of more robust and adaptable collaborative AI systems within virtual environments. Potential parallels to other domains are discussed as speculative directions for future research, not as generalized claims.
 
-The paper is structured as follows: First, we review background literature on multi-agent systems, Minecraft as a research platform, and approaches to agent collaboration. Next, we detail our methodology, including case study selection criteria and analytical framework. We then analyze Project Sid and TeamCraft individually before conducting a comparative analysis across organizational structures, communication patterns, learning mechanisms, and sustainability. Finally, we discuss theoretical implications and practical applications before concluding with directions for future research.
+The paper is structured as follows: First, we review background literature on MAS, Minecraft as a research platform, and approaches to agent collaboration. Next, we detail our methodology, including case study selection criteria and analytical framework. We then analyze Project Sid and TeamCraft individually before conducting a comparative analysis across organizational structures, communication patterns, learning mechanisms, and sustainability. Finally, we discuss theoretical implications, explore speculative practical applications in other domains, and conclude with directions for future research.
 
 \section{Background and Related Work}
 
+\subsection{Key Concepts and Definitions}
+
+To ensure conceptual clarity, this paper adopts widely accepted definitions for several key terms:
+
+\begin{itemize}
+    \item \textit{Agent}: ``An entity that perceives its environment through sensors and acts upon that environment through actuators'' \autocite{Russell2009ArtificialIntelligenceAModernApproach}. Agents may be human, robotic, or software-based, and are characterized by autonomy, decision-making, and interaction capabilities.
+    \item \textit{Artificial Intelligence (AI)}: ``The study of agents that receive percepts from the environment and perform actions'' with the goal of maximizing some notion of cumulative reward \autocite{Russell2009ArtificialIntelligenceAModernApproach}. In multi-agent contexts, AI encompasses the design of algorithms and architectures enabling agents to learn, reason, and collaborate.
+    \item \textit{Multi-Agent System (MAS)}: ``A system composed of multiple interacting agents, which may be cooperative, competitive, or both, and whose collective behavior emerges from their interactions'' \autocite{Wooldridge2009AnIntroductionToMultiAgentSystems}. MAS research focuses on coordination, communication, and emergent phenomena among agents.
+    \item \textit{Collaboration}: ``A process in which two or more agents work together to achieve shared goals, often requiring coordination, communication, and joint decision-making'' \autocite{Panait2005CooperativeMultiAgentLearning}. Collaboration in MAS may be task-oriented or socially-oriented, and is central to the emergence of collective intelligence.
+\end{itemize}
+
 \subsection{Multi-Agent Systems in Virtual Environments}
 
-Multi-agent systems represent a paradigm in artificial intelligence research where multiple autonomous agents interact within a shared environment to achieve individual or collective goals. The field has evolved significantly from early distributed AI research in the 1980s to contemporary approaches leveraging deep learning and reinforcement learning \autocite{Leeuwen2021SelfOrganizingMS, shu2024effectivegenaimultiagentcollaboration}. Modern multi-agent systems research encompasses diverse architectures ranging from fully cooperative to competitive and mixed-motive scenarios, with applications spanning robotics, logistics, gaming, and social simulation.
+Multi-agent systems (MAS) represent a paradigm in artificial intelligence research where multiple autonomous agents interact within a shared environment to achieve individual or collective goals. The field has evolved significantly from early distributed AI research in the 1980s to contemporary approaches leveraging deep learning and reinforcement learning \autocite{Leeuwen2021SelfOrganizingMS, shu2024effectivegenaimultiagentcollaboration}. Modern MAS research encompasses diverse architectures ranging from fully cooperative to competitive and mixed-motive scenarios, with applications spanning robotics, logistics, gaming, and social simulation.
 
 Virtual environments offer particularly valuable platforms for multi-agent research due to their controlled conditions, cost-effectiveness, and ability to simulate complex scenarios that would be impractical or impossible in physical settings \autocite{shu2024effectivegenaimultiagentcollaboration, Lhaksmana2018RoleBasedMF}. These environments provide a ``consequence-free'' space to test agent behaviors that might be risky or expensive in real-world settings, while still capturing essential dynamics of multi-agent interaction. Additionally, virtual environments allow researchers to precisely control experimental conditions and collect comprehensive data about agent behaviors and interactions.
 
@@ -181,7 +237,7 @@ Beyond technical challenges, Minecraft enables social interaction and emergent b
 
 Agent collaboration approaches typically fall into two broad categories: task-oriented collaboration, which focuses on completing specific objectives, and social-oriented collaboration, which emphasizes emergent social structures and norms \autocite{shu2024effectivegenaimultiagentcollaboration,qiu2024collaborativeintelligencepropagatingintentions}. Task-oriented approaches typically define explicit goals, roles, and protocols for interaction, prioritizing efficiency and measurable outcomes. Social-oriented approaches, in contrast, allow organizational structures and behavioral norms to emerge through repeated interactions, often leading to more adaptable but less predictable collaborative behaviors.
 
-Coordination mechanisms in multi-agent systems include role assignment, task allocation, and conflict resolution strategies \autocite{dong2024villageragentgraphbasedmultiagentframework,shu2024effectivegenaimultiagentcollaboration}. Role-based approaches assign specific responsibilities to agents based on their capabilities or position within an organizational structure. Task allocation methods distribute work among agents to optimize resource utilization and minimize conflicts. These mechanisms may be static (predetermined) or dynamic (adapting to changing conditions), with varying degrees of centralization in decision-making authority.
+Coordination mechanisms in MAS include role assignment, task allocation, and conflict resolution strategies \autocite{dong2024villageragentgraphbasedmultiagentframework,shu2024effectivegenaimultiagentcollaboration}. Role-based approaches assign specific responsibilities to agents based on their capabilities or position within an organizational structure. Task allocation methods distribute work among agents to optimize resource utilization and minimize conflicts. These mechanisms may be static (predetermined) or dynamic (adapting to changing conditions), with varying degrees of centralization in decision-making authority.
 
 Communication strategies play a crucial role in effective collaboration, ranging from direct communication through message passing to indirect communication through environmental modifications \autocite{shu2024effectivegenaimultiagentcollaboration,qiu2024collaborativeintelligencepropagatingintentions}. Direct communication allows for precise information sharing but requires protocols for when, what, and how to communicate. Indirect communication (stigmergy) relies on agents observing and responding to changes in the shared environment, often leading to emergent coordination patterns. The choice of communication strategy significantly impacts a system's scalability, robustness, and adaptability to novel situations.
 
@@ -191,15 +247,21 @@ Evaluation metrics for successful collaboration include task completion rates, r
 
 \subsection{Case Study Selection}
 
-The selection of Project Sid and TeamCraft as case studies for this comparative analysis was motivated by several key factors. First, both represent cutting-edge research published in 2024, ensuring relevance to the current state of multi-agent systems in Minecraft \autocite{al2024projectsidmanyagentsimulations,long2024teamcraftbenchmarkmultimodalmultiagent}. Second, they exemplify contrasting approaches to multi-agent collaboration: Project Sid focuses on emergent social structures and civilizational processes, while TeamCraft emphasizes structured task completion through explicit coordination frameworks. This contrast provides a natural experiment for examining different paradigms of agent collaboration.
+The selection of Project Sid and TeamCraft as case studies for this comparative analysis was guided by a transparent process following established best practice for case study research, specifically the criteria outlined by \textcite{Yin2018CaseStudyResearchDesignMethods} and \textcite{Eisenhardt1989BuildingTheoriesFromCaseStudyResearch}. The process involved the following steps:
 
-The comparison criteria for this analysis were developed based on key dimensions identified in the multi-agent systems literature, including organizational structure, communication patterns, learning mechanisms, and sustainability \autocite{shu2024effectivegenaimultiagentcollaboration,qiu2024collaborativeintelligencepropagatingintentions, chen2024sagentsselforganizingagentsopenended}. These dimensions capture essential aspects of collaborative systems while allowing for meaningful comparison across different architectural approaches. Each dimension is further broken down into specific metrics and indicators that can be assessed based on the published descriptions and results of the two systems.
+\begin{enumerate}[label=(\alph*)]
+    \item \textit{Identification of Candidate Systems:} A comprehensive review of recent literature on multi-agent systems in Minecraft was conducted, focusing on works published between 2023 and 2025. Candidate systems were identified based on their relevance, impact, and availability of detailed documentation.
+    \item \textit{Inclusion Criteria:} Case studies were included if they (1) represented state-of-the-art approaches in the field, (2) provided sufficient methodological transparency and published results for comparative analysis, and (3) exemplified clearly contrasting paradigms of agent collaboration (i.e., emergent/social-oriented vs. structured/task-oriented).
+    \item \textit{Exclusion Criteria:} Systems were excluded if they (1) lacked comprehensive published documentation, (2) did not offer a sufficiently distinct collaborative framework for meaningful comparison, or (3) overlapped substantially in methodology or objectives with the selected cases.
+    \item \textit{Justification for Selection:} Project Sid and TeamCraft were selected because they best met the inclusion criteria and provided the clearest contrast in collaborative approaches. Both are recent, well-documented, and widely cited in the literature, enabling a robust comparative analysis.
+    \item \textit{Justification for Exclusion of Other Systems:} Other modern systems, such as S-Agents, MineDojo, JARVIS-1, VillagerAgent, MineLand, STEVE Series, VoyagerVision, MindForge, and MindAgent, were considered during the selection process. S-Agents was excluded as a primary case study because its collaborative framework conceptually overlaps with Project Sid and does not provide a sufficiently distinct paradigm for direct comparison. While S-Agents demonstrates that emergent social organization can incorporate task-oriented mechanisms, it does not represent a fundamentally distinct hybrid paradigm, but rather reinforces the adaptability of emergent approaches. MineDojo and JARVIS-1 were excluded because they focus on single-agent or task-oriented frameworks and do not address multi-agent collaboration as their primary research objective. VillagerAgent was excluded because, although it introduces a graph-based multi-agent framework, its structured/task-oriented approach overlaps with TeamCraft and does not provide additional contrast for the comparative analysis. MineLand was excluded as its primary contribution is ecological simulation and social interaction modeling, rather than a distinct collaborative framework; it serves as supporting context for scalability and social dynamics but does not present a unique approach to agent collaboration. STEVE Series was excluded because it focuses on single-agent planning and construction tasks, not multi-agent collaboration, and therefore does not meet the inclusion criteria. VoyagerVision and MindAgent were excluded because they primarily focus on single-agent capabilities and do not introduce distinct multi-agent collaborative frameworks. MindForge provides infrastructure for multi-agent research but does not itself propose or evaluate a novel collaborative paradigm. Therefore, these systems are excluded from the main comparative analysis but referenced for context where relevant. Instead, insights from these systems are referenced in the comparative analysis and discussion to enrich the theoretical context and highlight the boundaries of current approaches.
+\end{enumerate}
 
-It is important to acknowledge the limitations of the case study approach. First, the analysis is constrained by the information available in published papers and associated materials, which may not capture all aspects of the systems' design and performance. Second, the two systems were developed with different primary objectives---Project Sid for studying emergent civilizational processes and TeamCraft for benchmarking multi-modal collaboration---making direct comparison challenging in some areas. Finally, as with any case study research, findings may not generalize to all multi-agent systems or environments beyond Minecraft.
+To further increase transparency, an overview of all cited candidate case studies, their key features, and the rationale for inclusion or exclusion is provided in Appendix~\ref{appendix:casestudycomparison}.
 
 \subsection{Analytical Framework}
 
-The comparative analysis employs a structured framework examining four key dimensions: (1) Organizational structure, (2) Communication and coordination, (3) Learning and adaptation, and (4) Sustainability and scalability. Each dimension is analyzed through specific metrics drawn from multi-agent systems literature and organizational theory, providing a systematic basis for comparison.
+The comparative analysis employs a structured framework examining four key dimensions: (1) Organizational structure, (2) Communication and coordination, (3) Learning and adaptation, and (4) Sustainability and scalability. Each dimension is analyzed through the lens of established MAS literature and organizational theory, providing a systematic basis for comparison.
 
 Organizational structure is analyzed through the lens of hierarchy (the levels of authority and decision-making in the system), role specialization (how agents develop specialized functions), and adaptability (how the organization responds to changing conditions) \autocite{Lhaksmana2018RoleBasedMF,chen2024sagentsselforganizingagentsopenended}. Project Sid's emergent hierarchies are contrasted with TeamCraft's task-oriented organization to understand how different structural approaches affect collaborative outcomes. This analysis draws on organizational theory concepts such as centralization, formalization, and departmentalization to characterize the systems' organizational features.
 
@@ -209,13 +271,13 @@ Task allocation and sustainability are measured through metrics including effici
 
 \subsection{Use of Generative AI}
 
-This research employed generative AI tools throughout the research process, including literature review, analysis, and manuscript preparation. Specifically, LLMs were used to assist in identifying relevant literature, synthesizing findings across sources, and generating initial drafts of paper sections. This approach allowed for efficient processing of the extensive literature on multi-agent systems while maintaining focus on the specific research question.
+This research employed generative AI tools throughout the research process, including literature review, analysis, and manuscript preparation. Specifically, LLMs were used to assist in identifying relevant literature, synthesizing findings across sources, and generating initial drafts of paper sections. This approach allowed for efficient processing of the extensive literature on MAS while maintaining focus on the specific research question.
 
 The primary AI tool used was a LLM with research capabilities, which provided assistance in summarizing academic papers, identifying connections between concepts, and generating coherent prose based on specified content requirements. The model was provided with search results from academic databases and asked to summarize key findings, compare approaches, and identify research gaps. Human oversight was maintained throughout this process, with all AI-generated content reviewed, revised, and expanded based on direct examination of the original sources.
 
 Ethical considerations in the use of generative AI included ensuring proper attribution of ideas to original sources, verifying factual claims against primary literature, and maintaining transparency about the role of AI in the research process. All content generated by AI was treated as a first draft requiring human verification and refinement rather than as finished work. This approach aligns with emerging best practices for AI-assisted academic writing, which emphasize human oversight and accountability.
 
-The use of generative AI introduces certain limitations and potential biases, including the risk of propagating inaccuracies present in the training data, generating plausible-sounding but incorrect information, and prioritizing certain types of sources over others. To mitigate these risks, a systematic verification process was implemented, comparing AI-generated content against original sources and seeking additional sources where information appeared incomplete or potentially biased. The complete record of interactions with the AI system is included in the appendix to ensure full transparency about the research process.
+The use of generative AI introduces certain limitations and potential biases, including the risk of propagating inaccuracies present in the training data, generating plausible-sounding but incorrect information, and prioritizing certain types of sources over others. To mitigate these risks, a systematic verification process was implemented, comparing AI-generated content against original sources and seeking additional sources where information appeared incomplete or potentially biased. The complete record of interactions with the AI system is included in Appendix~\ref{appendix:aiconversationhistory} to ensure full transparency about the research process.
 
 % Generative AI (Perplexity and GPT-4) was used for literature search, synthesis, and drafting. All AI-generated content was reviewed and edited by the author. The full conversation history is included in the appendix for transparency, following best practices for responsible AI use \autocite{lund2023chatgpt}.
 
@@ -247,7 +309,7 @@ Project Sid's most significant achievement is demonstrating that AI agents can a
 
 Despite these achievements, Project Sid faces several challenges and limitations \autocite{al2024projectsidmanyagentsimulations}. Computational constraints limit the scale and duration of simulations, potentially obscuring longer-term evolutionary dynamics. The agents' behavioral repertoire, while impressive, still falls short of human social complexity in areas such as moral reasoning, aesthetic appreciation, and abstract problem-solving. Additionally, the current implementation relies heavily on language model capabilities, making it difficult to disentangle which aspects of social behavior emerge from the agents' learning and which are implicit in the underlying models.
 
-The implications of Project Sid for AI civilizations extend beyond academic interest to potential applications in organizational intelligence and human-AI collaboration \autocite{al2024projectsidmanyagentsimulations}. The observed patterns of self-organization could inform the design of multi-agent systems for complex tasks such as disaster response, urban planning, or managing large-scale industrial processes. By understanding how agent societies naturally organize, developers could create more adaptable and resilient systems that require less explicit coordination overhead and adapt more readily to changing conditions.
+The implications of Project Sid for AI civilizations extend beyond academic interest to potential applications in organizational intelligence and human-AI collaboration \autocite{al2024projectsidmanyagentsimulations}. The observed patterns of self-organization could inform the design of MAS for complex tasks such as disaster response, urban planning, or managing large-scale industrial processes. By understanding how agent societies naturally organize, developers could create more adaptable and resilient systems that require less explicit coordination overhead and adapt more readily to changing conditions.
 
 Several aspects of Project Sid remain unexplored, pointing to potential areas for future research \autocite{al2024projectsidmanyagentsimulations}. These include the long-term stability of agent societies over extended time periods, the impact of heterogeneous agent capabilities on social organization, and the potential for cross-cultural exchange between distinct agent societies. Additionally, more work is needed to understand how the principles observed in Minecraft environments might transfer to other virtual contexts or physical robotics applications, where different constraints and affordances may shape social dynamics in unexpected ways.
 
@@ -287,7 +349,7 @@ TeamCraft makes significant contributions to multi-agent benchmarking by establi
 
 \subsection{Organizational Structures}
 
-Project Sid and TeamCraft represent fundamentally different approaches to organizational structure in multi-agent systems. Project Sid employs an emergent organizational model where hierarchies, roles, and relationships develop through agent interactions without predefined structures \autocite{al2024projectsidmanyagentsimulations}. Agents gradually differentiate into specialized roles based on their experiences and the needs of the collective, forming flexible hierarchies that evolve with changing conditions. This approach parallels how human societies naturally organize, with leadership and role specialization emerging from repeated social interactions rather than external design.
+Project Sid and TeamCraft represent fundamentally different approaches to organizational structure in MAS. Project Sid employs an emergent organizational model where hierarchies, roles, and relationships develop through agent interactions without predefined structures \autocite{al2024projectsidmanyagentsimulations}. Agents gradually differentiate into specialized roles based on their experiences and the needs of the collective, forming flexible hierarchies that evolve with changing conditions. This approach parallels how human societies naturally organize, with leadership and role specialization emerging from repeated social interactions rather than external design.
 
 In contrast, TeamCraft implements a more structured, task-oriented organizational approach where roles and responsibilities are explicitly defined by task requirements \autocite{long2024teamcraftbenchmarkmultimodalmultiagent}. Coordination frameworks provide clear guidelines for how agents should divide labor and sequence activities, creating more predictable but less adaptable organizational patterns. This approach resembles formal organizations in human society, where roles and processes are designed to optimize efficiency for specific objectives rather than evolving organically through social dynamics.
 
@@ -313,7 +375,7 @@ TeamCraft relies more heavily on imitation learning from expert demonstrations, 
 
 Adaptation to novel situations reveals significant differences between the two systems. Project Sid demonstrates stronger adaptation to completely novel scenarios due to its emphasis on foundational learning mechanisms rather than task-specific knowledge \autocite{al2024projectsidmanyagentsimulations}. Agents can apply basic principles of social organization and resource management to unfamiliar challenges, gradually developing effective responses through continued interaction and feedback. TeamCraft shows better immediate performance on variations of familiar tasks but struggles with fundamentally novel challenges that require significant departures from demonstrated behaviors \autocite{long2024teamcraftbenchmarkmultimodalmultiagent}.
 
-Both systems face challenges in knowledge transfer across domains and tasks, though for different reasons \autocite{al2024projectsidmanyagentsimulations,long2024teamcraftbenchmarkmultimodalmultiagent,zhao2024steveseriesstepbystepconstruction}. Project Sid's emergent knowledge is often implicit in agent behaviors rather than explicitly represented, making it difficult to transfer learning directly from one context to another. TeamCraft's more structured representations enable clearer knowledge transfer within similar task families but may create overfitting to particular task structures that hinder transfer to significantly different domains. These different learning approaches highlight the tension between flexibility and efficiency in knowledge acquisition for multi-agent systems.
+Both systems face challenges in knowledge transfer across domains and tasks, though for different reasons \autocite{al2024projectsidmanyagentsimulations,long2024teamcraftbenchmarkmultimodalmultiagent,zhao2024steveseriesstepbystepconstruction}. Project Sid's emergent knowledge is often implicit in agent behaviors rather than explicitly represented, making it difficult to transfer learning directly from one context to another. TeamCraft's more structured representations enable clearer knowledge transfer within similar task families but may create overfitting to particular task structures that hinder transfer to significantly different domains. These different learning approaches highlight the tension between flexibility and efficiency in knowledge acquisition for MAS.
 
 \subsection{Sustainability and Scalability}
 
@@ -325,13 +387,13 @@ Scaling to larger agent populations presents distinct challenges for each system
 
 TeamCraft faces greater challenges in scaling beyond the team sizes present in its training data \autocite{long2024teamcraftbenchmarkmultimodalmultiagent,yu2024minelandsimulatinglargescalemultiagent}. Performance tends to degrade when the number of agents increases significantly beyond what was demonstrated, suggesting limitations in how the coordination frameworks generalize to larger teams. This scaling challenge highlights a broader issue with task-oriented approaches: their optimization for specific contexts may create implicit assumptions about team size and composition that limit generalization to significantly different configurations.
 
-Resource efficiency presents different trade-offs in the two systems. Project Sid initially shows lower efficiency as social structures are forming but develops increasingly efficient resource utilization as specialization and coordination mechanisms mature \autocite{al2024projectsidmanyagentsimulations}. TeamCraft demonstrates higher immediate efficiency on familiar tasks but may use resources suboptimally when facing novel challenges that require adaptation \autocite{long2024teamcraftbenchmarkmultimodalmultiagent}. These patterns highlight the fundamental tension between optimization for known conditions versus adaptability to changing circumstances---a key consideration for sustainable multi-agent systems.
+Resource efficiency presents different trade-offs in the two systems. Project Sid initially shows lower efficiency as social structures are forming but develops increasingly efficient resource utilization as specialization and coordination mechanisms mature \autocite{al2024projectsidmanyagentsimulations}. TeamCraft demonstrates higher immediate efficiency on familiar tasks but may use resources suboptimally when facing novel challenges that require adaptation \autocite{long2024teamcraftbenchmarkmultimodalmultiagent}. These patterns highlight the fundamental tension between optimization for known conditions versus adaptability to changing circumstances---a key consideration for sustainable MAS.
 
 \section{Discussion}
 
 \subsection{Theoretical Implications}
 
-The comparison of Project Sid and TeamCraft yields important insights for multi-agent systems theory, particularly regarding the relationship between organizational structure and adaptive capacity. The emergent, self-organizing approach of Project Sid demonstrates how complex coordination can arise without explicit design, suggesting that fundamental principles of social organization may be discoverable through agent learning rather than requiring human engineering \autocite{al2024projectsidmanyagentsimulations,chen2024sagentsselforganizingagentsopenended}. This finding supports theories of emergent complexity in multi-agent systems and suggests that allowing structural flexibility may be crucial for developing truly adaptive collaborative systems.
+The comparison of Project Sid and TeamCraft yields important insights for MAS theory, particularly regarding the relationship between organizational structure and adaptive capacity. The emergent, self-organizing approach of Project Sid demonstrates how complex coordination can arise without explicit design, suggesting that fundamental principles of social organization may be discoverable through agent learning rather than requiring human engineering \autocite{al2024projectsidmanyagentsimulations,chen2024sagentsselforganizingagentsopenended}. This finding supports theories of emergent complexity in MAS and suggests that allowing structural flexibility may be crucial for developing truly adaptive collaborative systems.
 
 The contrast between these approaches contributes significantly to our understanding of artificial societies, revealing parallels with human social systems while also highlighting uniquely computational aspects of agent societies \autocite{al2024projectsidmanyagentsimulations,long2024teamcraftbenchmarkmultimodalmultiagent}. Like human societies, agent groups in Project Sid develop specialized roles, governance structures, and cultural transmission mechanisms that enhance collective capabilities. Unlike human societies, however, these developments occur on dramatically accelerated timescales and may follow different evolutionary trajectories due to the agents' computational nature. These similarities and differences provide a novel lens for studying social organization more broadly.
 
@@ -341,23 +403,23 @@ The development of self-organizing AI societies raises profound philosophical qu
 
 \subsection{Practical Applications}
 
-The findings from comparing Project Sid and TeamCraft have significant implications for real-world applications of multi-agent systems. Organizational design could benefit from hybrid approaches that combine TeamCraft's efficiency in well-structured domains with Project Sid's adaptability in dynamic environments \autocite{long2024teamcraftbenchmarkmultimodalmultiagent,al2024projectsidmanyagentsimulations}. For example, disaster response systems might employ predefined coordination protocols for routine operations while maintaining the capacity for emergent reorganization when facing unprecedented situations. This balanced approach could optimize performance across varying conditions while maintaining robustness to unexpected challenges.
+The findings from comparing Project Sid and TeamCraft have significant implications for real-world applications of MAS. Organizational design could benefit from hybrid approaches that combine TeamCraft's efficiency in well-structured domains with Project Sid's adaptability in dynamic environments \autocite{long2024teamcraftbenchmarkmultimodalmultiagent,al2024projectsidmanyagentssimulations}. For example, disaster response systems might employ predefined coordination protocols for routine operations while maintaining the capacity for emergent reorganization when facing unprecedented situations. This balanced approach could optimize performance across varying conditions while maintaining robustness to unexpected challenges.
 
-Insights from Minecraft-based systems could transfer to other domains including physical robotics, business process management, and social network governance \autocite{dong2024villageragentgraphbasedmultiagentframework, zhao2024hierarchicalautoorganizingopenendedmultiagent}. The coordination mechanisms observed in TeamCraft could inform task allocation algorithms for warehouse robotics or manufacturing systems, while Project Sid's emergent governance structures might inspire approaches to community management in online platforms. The abstract principles of effective collaboration---such as balancing specialization with flexibility---transcend the specific Minecraft environment and can guide system design across diverse applications.
+While this paper's scope is limited to Minecraft-based MAS, it is worth exploring potential parallels to other domains. For instance, task allocation mechanisms observed in TeamCraft may inform similar strategies in warehouse robotics, where agents must efficiently divide labor. Likewise, Project Sid's emergent governance structures could inspire adaptive management approaches in online communities. These parallels are speculative and require further validation; the transferability of Minecraft-based insights to other domains depends on the presence of analogous coordination challenges, organizational structures, and adaptability requirements. Each application area should be carefully analyzed to justify the relevance of Minecraft findings before drawing broader conclusions.
 
-Several design principles for effective multi-agent systems emerge from this comparison. First, incorporating both structured coordination frameworks and emergent organizational capabilities creates systems that can optimize for efficiency while maintaining adaptability \autocite{chen2024sagentsselforganizingagentsopenended,qiu2024collaborativeintelligencepropagatingintentions}. Second, developing robust communication protocols that balance information sharing with communication overhead enhances coordination across varying contexts \autocite{shu2024effectivegenaimultiagentcollaboration,qiu2024collaborativeintelligencepropagatingintentions}. Third, supporting role flexibility while encouraging specialization allows systems to balance expertise development with adaptive capacity \autocite{al2024projectsidmanyagentsimulations,long2024teamcraftbenchmarkmultimodalmultiagent}. Fourth, implementing cultural transmission mechanisms enables knowledge preservation across time while facilitating system-wide adaptation to changing conditions \autocite{al2024projectsidmanyagentsimulations}.
+Several design principles for effective MAS emerge from this comparison. First, incorporating both structured coordination frameworks and emergent organizational capabilities creates systems that can optimize for efficiency while maintaining adaptability \autocite{chen2024sagentsselforganizingagentsopenended,qiu2024collaborativeintelligencepropagatingintentions}. Second, developing robust communication protocols that balance information sharing with communication overhead enhances coordination across varying contexts \autocite{shu2024effectivegenaimultiagentcollaboration,qiu2024collaborativeintelligencepropagatingintentions}. Third, supporting role flexibility while encouraging specialization allows systems to balance expertise development with adaptive capacity \autocite{al2024projectsidmanyagentsimulations,long2024teamcraftbenchmarkmultimodalmultiagent}. Fourth, implementing cultural transmission mechanisms enables knowledge preservation across time while facilitating system-wide adaptation to changing conditions \autocite{al2024projectsidmanyagentsimulations}.
 
-Deploying multi-agent systems in real-world contexts raises important ethical considerations regarding transparency, accountability, and human oversight \autocite{chen2024sagentsselforganizingagentsopenended}. As these systems develop increasingly autonomous organizational capabilities, ensuring they remain aligned with human values and priorities becomes crucial. Mechanisms for explaining emergent behaviors, maintaining human control over critical decisions, and verifying system performance across diverse conditions must be incorporated into system design from the outset. These ethical safeguards are particularly important as multi-agent systems scale to include larger numbers of agents with more complex interaction patterns.
+Deploying MAS in real-world contexts raises important ethical considerations regarding transparency, accountability, and human oversight \autocite{chen2024sagentsselforganizingagentsopenended}. As these systems develop increasingly autonomous organizational capabilities, ensuring they remain aligned with human values and priorities becomes crucial. Mechanisms for explaining emergent behaviors, maintaining human control over critical decisions, and verifying system performance across diverse conditions must be incorporated into system design from the outset. These ethical safeguards are particularly important as MAS scale to include larger numbers of agents with more complex interaction patterns.
 
 \section{Conclusion and Future Work}
 
-This comparative analysis of Project Sid and TeamCraft reveals fundamental differences in how multi-agent systems approach collaboration in Minecraft environments. Project Sid's emergent, socially-oriented approach produces adaptable, self-organizing agent societies capable of developing specialized roles, governance structures, and cultural transmission mechanisms \autocite{al2024projectsidmanyagentsimulations}. In contrast, TeamCraft's structured, task-oriented approach enables efficient coordination through explicit frameworks optimized for specific collaborative challenges \autocite{long2024teamcraftbenchmarkmultimodalmultiagent}. These different approaches create distinct strengths and limitations, with Project Sid excelling in adaptability and long-term sustainability while TeamCraft demonstrates superior efficiency on well-defined tasks.
+This comparative analysis of Project Sid and TeamCraft reveals fundamental differences in how MAS approach collaboration in Minecraft environments. Project Sid's emergent, socially-oriented approach produces adaptable, self-organizing agent societies capable of developing specialized roles, governance structures, and cultural transmission mechanisms \autocite{al2024projectsidmanyagentsimulations}. In contrast, TeamCraft's structured, task-oriented approach enables efficient coordination through explicit frameworks optimized for specific collaborative challenges \autocite{long2024teamcraftbenchmarkmultimodalmultiagent}. These different approaches create distinct strengths and limitations, with Project Sid excelling in adaptability and long-term sustainability while TeamCraft demonstrates superior efficiency on well-defined tasks.
 
 Addressing our research question directly, Project Sid's self-organizing social systems achieve sustainable multi-agent collaboration through emergent structures that continuously adapt to changing conditions, enabling long-term viability despite environmental fluctuations and agent turnover \autocite{al2024projectsidmanyagentsimulations}. TeamCraft's task-oriented coordination frameworks achieve sustainability through efficient resource utilization and precise task execution but may struggle with adaptation to significant environmental changes or team composition shifts \autocite{long2024teamcraftbenchmarkmultimodalmultiagent}. The optimal approach depends on the specific collaborative context: dynamic, unpredictable environments favor emergent organization, while stable, well-defined domains benefit from structured coordination.
 
 This study has several limitations that should be acknowledged. First, the analysis relies primarily on published descriptions rather than direct experimentation with the systems, potentially missing nuances in implementation and performance. Second, the two systems were developed with different primary objectives---Project Sid for studying emergent civilizational processes and TeamCraft for benchmarking multi-modal collaboration---making direct comparison challenging in some areas. Third, both systems are relatively recent developments, limiting our understanding of their long-term evolution and performance.
 
-Future research should explore hybrid approaches that combine the strengths of both paradigms, potentially developing systems that employ structured coordination for efficiency while maintaining capacity for emergent reorganization when facing novel challenges \autocite{qiu2024collaborativeintelligencepropagatingintentions,chen2024sagentsselforganizingagentsopenended}. Longitudinal studies examining how agent societies evolve over extended periods could provide deeper insights into sustainability and adaptive capacity. Integration with human societies represents another promising direction, investigating how artificial agent groups might collaborate with human teams while maintaining alignment with human values and priorities. Finally, exploring how insights from Minecraft-based systems transfer to physical robotics and real-world organizational contexts remains an important frontier for multi-agent systems research.
+Future research should explore hybrid approaches that combine the strengths of both paradigms, potentially developing systems that employ structured coordination for efficiency while maintaining capacity for emergent reorganization when facing novel challenges \autocite{qiu2024collaborativeintelligencepropagatingintentions,chen2024sagentsselforganizingagentsopenended}. Longitudinal studies examining how agent societies evolve over extended periods could provide deeper insights into sustainability and adaptive capacity. Integration with human societies represents another promising direction, investigating how artificial agent groups might collaborate with human teams while maintaining alignment with human values and priorities. Finally, exploring how insights from Minecraft-based systems transfer to physical robotics and real-world organizational contexts remains an important frontier for MAS research.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %BIBLIOGRAPHY
@@ -377,14 +439,38 @@ Future research should explore hybrid approaches that combine the strengths of b
 
 \clearpage
 \appendix
-%\renewcommand*{\thesection}{\Alph{section}}\textbf{}
+\renewcommand{\thesection}{\Alph{section}}  % add dot but only for section titles not as suffix for letter
 
-% APPENDIX A
-\section{Appendix}
+% Appendix A: Case Study Comparison Table
+\clearpage
+\section{Case Study Comparison}
+\label{appendix:casestudycomparison}
 
-\subsection{AI Conversation History}
+\begin{table}[ht]
+    \caption{Comparison of Candidate Case Studies for Project Sid and TeamCraft.}
+    \begin{tabular}{@{}lllp{3cm}p{3cm}lp{3cm}@{}}
+        \toprule
+        \textbf{Case Study} & \textbf{Authors} & \textbf{Year} & \textbf{Collaboration Paradigm} & \textbf{Documentation Quality} & \textbf{Distinctiveness} & \textbf{Selection} \\
+        \midrule
+        Project Sid & \citeauthor{al2024projectsidmanyagentsimulations} & \citeyear{al2024projectsidmanyagentsimulations} & Emergent/Social & High & High & Included \\
+        TeamCraft & \citeauthor{long2024teamcraftbenchmarkmultimodalmultiagent} & \citeyear{long2024teamcraftbenchmarkmultimodalmultiagent} & Structured/Task & High & High & Included \\
+        S-Agents & \citeauthor{chen2024sagentsselforganizingagentsopenended} & \citeyear{chen2024sagentsselforganizingagentsopenended} & Emergent/Social (with task-oriented features) & High & Moderate & Excluded \\
+        MineDojo & \citeauthor{fan2022minedojobuildingopenendedembodied} & \citeyear{fan2022minedojobuildingopenendedembodied} & Task-oriented & High & Low & Excluded \\
+        JARVIS-1 & \citeauthor{wang2023jarvis1openworldmultitaskagents} & \citeyear{wang2023jarvis1openworldmultitaskagents} & Task-oriented & High & Low & Excluded \\
+        VillagerAgent & \citeauthor{dong2024villageragentgraphbasedmultiagentframework} & \citeyear{dong2024villageragentgraphbasedmultiagentframework} & Structured/Task (Graph-based) & Moderate & Moderate & Excluded \\
+        MineLand & \citeauthor{yu2024minelandsimulatinglargescalemultiagent} & \citeyear{yu2024minelandsimulatinglargescalemultiagent} & Emergent/Social (Ecological simulation) & Moderate & Moderate & Excluded \\
+        STEVE Series & \citeauthor{zhao2024steveseriesstepbystepconstruction} & \citeyear{zhao2024steveseriesstepbystepconstruction} & Single-agent/Task-oriented & High & Low & Excluded \\
+        VoyagerVision & \citeauthor{smyth2025voyagervisioninvestigatingrolemultimodal} & \citeyear{smyth2025voyagervisioninvestigatingrolemultimodal} & Single-agent/Task-oriented & High & Low & Excluded \\
+        MindForge & \citeauthor{lica2025mindforgeempoweringembodiedagents} & \citeyear{lica2025mindforgeempoweringembodiedagents} & Platform (multi-agent support) & High & Moderate & Excluded \\
+        MindAgent & \citeauthor{gong2023mindagentemergentgaminginteraction} & \citeyear{gong2023mindagentemergentgaminginteraction} & Single-agent/Task-oriented & High & Low & Excluded \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:casestudycomparison}
+\end{table}
+
+\section{AI Conversation History}
+\label{appendix:aiconversationhistory}
 
 \lstinputlisting[language={}, label={lst:chats}]{includes/chats.xml}
-
 
 \end{document}
