@@ -1,3 +1,7 @@
+# Ignore hidden directories
+.vscode/
+.DS_Store
+
 # Do not track the pdflatex/latexmk auxiliary files
 *.aux
 *.fdb_latexmk

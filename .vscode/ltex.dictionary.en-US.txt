@@ -1,6 +1,0 @@
-TeamCraft
-LLMs
-MineDojo
-MineLand
-stigmergy
-multi-agent
