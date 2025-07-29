@@ -354,7 +354,7 @@ Resource efficiency presents different trade-offs in the two systems. Project~Si
 
 \section{Discussion}
 
-The comparison of Project~Sid and TeamCraft yields key insights for MAS theory and practice, particularly regarding the relationship between organizational structure and adaptive capacity. Project~Sid's emergent, self-organizing approach demonstrates that complex coordination can arise without explicit design, supporting theories of emergent complexity in MAS and highlighting the value of structural flexibility for developing adaptive collaborative systems \autocite{Altera2024}. In contrast, TeamCraft's structured coordination frameworks optimize efficiency for well-defined tasks but may constrain adaptability in dynamic or unfamiliar contexts \autocite{Long2024}.
+The comparison of Project~Sid and TeamCraft (see Table~\ref{tab:comparativeoverview}) yields key insights for MAS theory and practice, particularly regarding the relationship between organizational structure and adaptive capacity. Project~Sid's emergent, self-organizing approach demonstrates that complex coordination can arise without explicit design, supporting theories of emergent complexity in MAS and highlighting the value of structural flexibility for developing adaptive collaborative systems \autocite{Altera2024}. In contrast, TeamCraft's structured coordination frameworks optimize efficiency for well-defined tasks but may constrain adaptability in dynamic or unfamiliar contexts \autocite{Long2024}.
 
 These findings reveal parallels with human behavior: Project~Sid's emergent leadership and role specialization mirror organic development in human groups, while TeamCraft's formalized processes resemble designed organizations. The results suggest that matching organizational structure to environmental uncertainty is as relevant for artificial societies as for human ones \autocite{Chen2024, Lhaksmana2018}. Moreover, the accelerated and computational nature of agent societies offers a novel lens for studying social organization and value alignment in MAS.
 
@@ -421,7 +421,7 @@ This study is limited by its reliance on published descriptions rather than dire
 \end{figure}
 
 \begin{landscape}
-\begin{longtable}{p{2.5cm} p{1cm} p{3.5cm} p{3cm} p{3cm} p{2cm} p{7cm}}
+\begin{longtable}{p{2.5cm} p{1cm} p{3.5cm} p{3cm} p{3cm} p{2cm} p{6.8cm}}
     \caption{Comparison of candidate case studies with features and selection rationale.} \label{tab:casestudycomparison} \\
     \toprule
     \textbf{Case Study} & \textbf{Year} & \textbf{Collaboration Paradigm} & \textbf{Documentation Quality} & \textbf{Distinctiveness} & \textbf{Selection} & \textbf{Rationale} \\
@@ -440,15 +440,40 @@ This study is limited by its reliance on published descriptions rather than dire
 
     Project~Sid & \citeyear{Altera2024} & Emergent/Social & High & High & Included & Most robust, clear emergent paradigm \\
     TeamCraft & \citeyear{Long2024} & Structured/Task & High & High & Included & Most robust, clear structured paradigm \\
-    S-Agents & \citeyear{Chen2024} & Emergent/Social (with task features) & High & Moderate & Excluded & Overlaps with Sid, not a distinct paradigm \\
+    S-Agents & \citeyear{Chen2024} & Emergent/Social (with task features) & High & Moderate & Excluded & Overlaps with Project~Sid, not a distinct paradigm \\
     MineDojo & \citeyear{Fan2022} & Task-oriented & High & Low & Excluded & Single-agent focus, not multi-agent collaboration \\
     JARVIS-1 & \citeyear{Wang2025} & Task-oriented & High & Low & Excluded & Single-agent focus, not multi-agent collaboration \\
     VillagerAgent & \citeyear{Dong2024} & Structured/Task (Graph-based) & Moderate & Moderate & Excluded & Overlaps with TeamCraft, not a distinct paradigm \\
     MineLand & \citeyear{Yu2024} & Emergent/Social (Ecological) & Moderate & Moderate & Excluded & Focuses on ecology/social simulation, not collaboration paradigm \\
-    STEVE Series & \citeyear{Zhao2024} & Single-agent/Task-oriented & High & Low & Excluded & Not multi-agent collaboration \\
-    VoyagerVision & \citeyear{Smyth2025} & Single-agent/Task-oriented & High & Low & Excluded & Not multi-agent collaboration \\
-    MindForge & \citeyear{Lica2024} & Platform (multi-agent support) & High & Moderate & Excluded & Infrastructure only, not a novel paradigm \\
-    MindAgent & \citeyear{Gong2023} & Single-agent/Task-oriented & High & Low & Excluded & Not multi-agent collaboration \\
+    STEVE Series & \citeyear{Zhao2024} & Single-agent/ \newline Task-oriented & High & Low & Excluded & Not multi-agent collaboration \\
+    VoyagerVision & \citeyear{Smyth2025} & Single-agent/ \newline Task-oriented & High & Low & Excluded & Not multi-agent collaboration \\
+    MindForge & \citeyear{Lica2024} & Platform (multi- \newline agent support) & High & Moderate & Excluded & Infrastructure only, not a novel paradigm \\
+    MindAgent & \citeyear{Gong2023} & Single-agent/ \newline Task-oriented & High & Low & Excluded & Not multi-agent collaboration \\
+\end{longtable}
+\end{landscape}
+
+\begin{landscape}
+\begin{longtable}{p{3.5cm} p{6.5cm} p{6.5cm} p{6.5cm}}
+    \caption{Comparison of Project~Sid and TeamCraft across key dimensions.} \label{tab:comparativeoverview} \\
+    \toprule
+    \textbf{Dimension} & \textbf{Project~Sid} & \textbf{TeamCraft} & \textbf{Comparison} \\
+    \midrule
+    \endfirsthead
+    \multicolumn{4}{l}{\textit{Continued from previous page}} \\
+    \toprule
+    \textbf{Dimension} & \textbf{Project~Sid} & \textbf{TeamCraft} & \textbf{Comparison} \\
+    \midrule
+    \endhead
+    \midrule
+    \multicolumn{4}{r}{\textit{Continued on next page}} \\
+    \endfoot
+    \bottomrule
+    \endlastfoot
+
+    Organizational Structure & Emergent, self-organizing; roles and hierarchies develop dynamically; flexible and adaptive to change. & Structured, task-oriented; roles and responsibilities predefined by task requirements; optimized for efficiency. & Project~Sid: Highly adaptive, mirrors organic societies. \newline TeamCraft: Predictable, efficient for set tasks. \\
+    Communication and \newline Coordination & Communication patterns and coordination mechanisms emerge through agent interaction; both direct and indirect (environmental) communication. & Formalized protocols derived from demonstrations; explicit, efficient information sharing for task completion. & Project~Sid: Evolves communication, robust to novelty. \newline TeamCraft: Optimized protocols, excels in routine. \\
+    Learning and \newline Adaptation & Reinforcement and social learning; open-ended, agents learn from environment and each other; supports novel behavior emergence. & Imitation learning from expert demonstrations, with some reinforcement learning; strong on familiar tasks, limited on novel ones. & Project~Sid: Open-ended, adapts to new scenarios. \newline TeamCraft: Fast on known tasks, less generalization. \\
+    Sustainability and \newline Scalability & Self-organizing, resilient social structures; adapts to agent turnover and environmental change; scales to 1000+ agents. & Predefined frameworks; strong short-term performance, but less sustainable as conditions change; scaling beyond training data is challenging. & Project~Sid: Long-term, scalable, resilient. \newline TeamCraft: High efficiency, but scaling and sustainability limited. \\
 \end{longtable}
 \end{landscape}
 
