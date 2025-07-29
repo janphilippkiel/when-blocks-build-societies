@@ -43,8 +43,7 @@ Prompt:
 ├── slides-midterm.pdf          # Midterm presentation slides
 ├── latex.code-workspace        # VS Code workspace settings
 ├── README.md                   # This file
-└── appendix/
-    └── chats.xml               # AI conversation logs
+└── appendix/                   # Supplementary materials and figures
 ```
 
 ## Compilation
