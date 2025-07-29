@@ -139,7 +139,7 @@
 \usepackage{background}
 \backgroundsetup{
 	contents=\Large{\texttt{\MakeUppercase{\gitBranch}-\gitDescribe{ @ }\lastChange}},
-	color=red,
+	color=white,
 	placement=center,
 	angle=90,
 	opacity=1,
@@ -177,13 +177,25 @@
         \vspace*{\fill}
     \end{center}
 \end{titlepage}
+\clearpage
 
-% \setcounter{page}{2} % Ensure titlepage is counted as first page
+\section*{Disclaimer}
+\addcontentsline{toc}{section}{Disclaimer}
 
+This paper was developed through a transparent and well-documented co- \linebreak creation process between the author and generative AI tools. Generative AI was systematically used for literature review, synthesis, drafting, and text generation, with all AI-assisted contributions subject to rigorous human review, verification, and editing to ensure academic integrity and factual accuracy.
+
+The documentation approach for AI usage evolved during the project. Initially, the intention was to archive full AI conversation logs to provide direct traceability of prompts and responses. An example of this initial approach is available in Appendix~\ref{appendix:aiconversationlogs}. However, through experimentation, it became clear that maintaining detailed, context-rich commit messages in the version control system (git) offered a more practical and effective means of documenting the AI's influence on the research process. As a result, the repository does not include raw AI conversation logs for the majority of the project. Instead, every significant change to the manuscript and supplementary materials is accompanied by a descriptive commit message. These messages specify the nature of the AI-generated suggestion, the prompt or question that led to it, the rationale for accepting or modifying the output, and any key learnings or verification steps. This approach allows readers to follow the evolution of the artifact, understand how AI prompts shaped the work over time, and assess the degree of human oversight and critical engagement at each stage.
+
+The complete version history, including all commit messages and their context, is available in the public GitHub repository: \url{https://github.com/janphilippkiel/when-blocks-build-societies}. This ensures transparency and reproducibility, enabling others to trace the iterative development process and evaluate the role of generative AI in the creation of this paper. For further details, see the \hyperref[sec:declaration-gen-ai]{Declaration of Generative AI Tool Usage} and the README in the GitHub repository.
+
+\vspace*{\fill}
+\clearpage
+
+\section*{Abstract}
 \addcontentsline{toc}{section}{Abstract}
-\begin{abstract}
-This paper presents a comparative analysis of multi-agent systems (MAS) within the Minecraft environment. Focusing on Project~Sid and TeamCraft as case studies, the research investigates how task-oriented and socially-oriented paradigms address the challenge of sustainable collaboration among autonomous agents. Project~Sid exemplifies emergent, self-organizing agent societies, where roles, norms, and communication patterns develop organically, enabling adaptability and long-term sustainability. In contrast, TeamCraft employs structured, task-driven coordination with explicit role assignments and protocols, optimizing efficiency for well-defined objectives but limiting flexibility in novel contexts. The study employs a structured analytical framework to compare organizational structures, communication and coordination mechanisms, learning and adaptation strategies, and scalability. Findings highlight fundamental trade-offs: emergent approaches foster resilience and adaptability but may sacrifice initial efficiency, while structured frameworks excel in familiar scenarios but struggle with generalization and long-term viability. The analysis yields design principles for robust MAS, emphasizing the integration of both structured and emergent elements, effective communication, and ethical oversight. The insights extend beyond Minecraft, informing the development of adaptable, sustainable, and ethically aligned MAS in diverse virtual and real-world domains.
-\end{abstract}
+This paper presents a comparative analysis of multi-agent systems (MAS) \linebreak within the Minecraft environment. Focusing on Project~Sid and TeamCraft as case studies, the research investigates how task-oriented and socially-oriented paradigms address the challenge of sustainable collaboration among autonomous agents. \linebreak Project~Sid exemplifies emergent, self-organizing agent societies, where roles, norms, and communication patterns develop organically, enabling adaptability and long-term sustainability. In contrast, TeamCraft employs structured, task-driven coordination with explicit role assignments and protocols, optimizing efficiency for well-defined objectives but limiting flexibility in novel contexts. The study employs a structured analytical framework to compare organizational structures, communication and coordination mechanisms, learning and adaptation strategies, and scalability. Findings highlight fundamental trade-offs: emergent approaches foster resilience and adaptability but may sacrifice initial efficiency, while structured frameworks excel in familiar scenarios but struggle with generalization and long-term viability. The analysis yields design principles for robust MAS, emphasizing the integration of both structured and emergent elements, effective communication, and ethical oversight. The insights extend beyond Minecraft, informing the development of adaptable, sustainable, and ethically aligned MAS in diverse virtual and real-world domains.
+
+\vspace*{\fill}
 \clearpage
 
 % Table of Contents self-reference
@@ -480,7 +492,7 @@ This study is limited by its reliance on published descriptions rather than dire
 \section{AI Conversation Logs}
 \label{appendix:aiconversationlogs}
 
-\lstinputlisting[language={}, label={lst:chats}]{appendix/chats.xml}
+\lstinputlisting[language={}, label={lst:aiconversationlogs}]{appendix/ai-conversation-logs.xml}
 
 \clearpage
 \includepdf[
@@ -491,6 +503,7 @@ This study is limited by its reliance on published descriptions rather than dire
   pagecommand={
     \section*{Declaration of Generative AI Tool Usage}
     \addcontentsline{toc}{section}{Declaration of Generative AI Tool Usage}
+    \label{sec:declaration-gen-ai}
   }
 ]{appendix/declaration-gen-ai-usage.pdf}
 \includepdf[
